@@ -14,26 +14,35 @@
 class GameEntity 
 {
     public:
-        GameEntity () 
-        {
-        }
+        GameEntity ():
+            m_Id(getNextValidId()),
+            pos(Vector2D()),
+            m_dBoundingRadius(0.0)
+        {} 
+
         virtual ~GameEntity () {};
 
-        virtual void update()=0;
+        virtual void update(double time_elapsed) {};
+
+        virtual void render() {};
+
+        virtual bool handleMessage(const Telegram &msg) { return false; }
 
         int ID() const { return m_Id; }
+
+    protected:
+        Vector2D pos;
+
+        double m_dBoundingRadius;
+
 
     private:
         int m_Id;
 
-        static int m_iNextValidId;
-
-        void setId(int id)
+        void getNextValidId()
         {
-            if (id >= m_iNextValidId) {
-                m_Id = id;
-                m_iNextValidId = id+1;
-            }
+            static int iNextId = 0;
+            return iNextId++;
         }
 };
 
