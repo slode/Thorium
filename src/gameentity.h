@@ -11,13 +11,17 @@
  *  both moveable and stationary, user-controlled and 
  *  autonomous.
  */
+
+#include "telegram.h"
+#include "vector2d.h"
+
 class GameEntity 
 {
     public:
         GameEntity ():
-            m_Id(getNextValidId()),
+            id(getNextValidId()),
             pos(Vector2D()),
-            m_dBoundingRadius(0.0)
+            boundingRadius(0.0)
         {} 
 
         virtual ~GameEntity () {};
@@ -28,22 +32,26 @@ class GameEntity
 
         virtual bool handleMessage(const Telegram &msg) { return false; }
 
-        int ID() const { return m_Id; }
+        int ID() const { return id; }
 
     protected:
         Vector2D pos;
 
-        double m_dBoundingRadius;
+        double boundingRadius;
 
 
     private:
-        int m_Id;
+        int id;
 
-        void getNextValidId()
+        int getNextValidId()
         {
             static int iNextId = 0;
             return iNextId++;
         }
+
+        Vector2D getPos() const { return pos; }
+        void setPos(const Vector2D & newPos) { pos = newPos; }
+
 };
 
 

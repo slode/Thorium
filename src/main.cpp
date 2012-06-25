@@ -127,7 +127,7 @@ int main( int argc, char *argv[] )
 		}
 
 	    //Move the square
-	    player.update();
+	    player.update(0.0);
 
 	    //Clear the screen
 	    glClear( GL_COLOR_BUFFER_BIT );
