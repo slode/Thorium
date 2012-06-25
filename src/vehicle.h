@@ -16,7 +16,7 @@ class Vehicle : public MovingGameEntity {
         //Handles key presses
 
         void handle_input(const SDL_Event &event);
-        void update();
+        void update(double time_elapsed);
         void render();
 };
 
@@ -46,7 +46,7 @@ void Vehicle::handle_input(const SDL_Event &event)
     }
 }
 
-void Vehicle::update()
+void Vehicle::update(double time_elapsed)
 {
     //Move the square left or right
     m_vPos.x += m_vVel.x;
