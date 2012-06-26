@@ -89,7 +89,7 @@ void clean_up()
 }
 
 
-
+#undef main
 int main( int argc, char *argv[] )
 {
     //Quit flag
@@ -103,8 +103,17 @@ int main( int argc, char *argv[] )
 
     GameWorld gw(SCREEN_HEIGHT, SCREEN_WIDTH);
     //Our square object
-    Vehicle player(&gw);
-
+    Vehicle player(
+            &gw,
+            Vector2D(50, 50),
+            Vector2D(1,1),
+            Vector2D(1,1),
+            2.0,
+            2.0,
+            2.0,
+            2.0,
+            2.0
+            );
     //The frame rate regulator
     Timer fps;
 

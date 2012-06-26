@@ -3,6 +3,7 @@
 
 #include "../src/vector2d.h"
 
+#include <iostream>
 
 namespace {
 
@@ -44,12 +45,19 @@ namespace {
     }
     TEST(MathTests)
     {
-        Vector2D a(0,0), b(0,1), c(1,0);
-        a.normalize();
+        Vector2D a(0,0), b(0,1), c(1,0), e(7,8);
+        a.norm();
         CHECK(a.length() == 0);
         CHECK(b.dot(c) == 0);
         CHECK(b.cross(c) == -1);
         CHECK(c.cross(b) == 1);
-    }
+        CHECK(c.dot(c.perp()) == 0);
 
+        double pi = 3.14159;
+        double pihalf = pi/2;
+        Vector2D d(c.rotate(pihalf));
+
+        CHECK(d == b);
+        CHECK_CLOSE(e.norm().length(), 1.0, 0.0001);
+    }
 }

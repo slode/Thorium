@@ -19,11 +19,16 @@ class GameEntity
 {
     public:
         GameEntity ():
-            id(getNextValidId()),
-            pos(Vector2D()),
-            boundingRadius(0.0)
+            m_id(getNextValidId()),
+            m_position(Vector2D()),
+            m_boundingRadius(0.0)
         {} 
 
+        GameEntity (Vector2D pos, double rad):
+            m_id(getNextValidId()),
+            m_position(pos),
+            m_boundingRadius(rad)
+        {} 
         virtual ~GameEntity () {};
 
         virtual void update(double time_elapsed) {};
@@ -32,16 +37,16 @@ class GameEntity
 
         virtual bool handleMessage(const Telegram &msg) { return false; }
 
-        int ID() const { return id; }
+        int ID() const { return m_id; }
 
     protected:
-        Vector2D pos;
+        Vector2D m_position;
 
-        double boundingRadius;
+        double m_boundingRadius;
 
 
     private:
-        int id;
+        int m_id;
 
         int getNextValidId()
         {
@@ -49,8 +54,8 @@ class GameEntity
             return iNextId++;
         }
 
-        Vector2D getPos() const { return pos; }
-        void setPos(const Vector2D & newPos) { pos = newPos; }
+        Vector2D getPos() const { return m_position; }
+        void setPos(const Vector2D & newPos) { m_position = newPos; }
 
 };
 

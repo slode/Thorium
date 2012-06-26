@@ -7,12 +7,37 @@
 #include "SDL/SDL.h"
 
 class Vehicle : public MovingGameEntity {
-    private:
-        Sprite * m_sSprite;
+    protected:
+        Sprite * m_sprite;
 
-        GameWorld * m_gWorld;
+        GameWorld * m_world;
     public:
-        Vehicle(GameWorld * wrld);
+
+        Vehicle(
+                GameWorld *world,
+                Vector2D position,
+                Vector2D velocity,
+                Vector2D heading,
+                double radius,
+                double maxSpeed,
+                double mass,
+                double maxTurnRate,
+                double maxForce 
+                ): 
+            MovingGameEntity(
+                    position,
+                    velocity,
+                    heading,
+                    radius,
+                    maxSpeed,
+                    mass,
+                    maxTurnRate,
+                    maxForce),
+            m_world(world)
+    { 
+        m_sprite = new Sprite();
+    }
+        
         //Handles key presses
 
         void handle_input(const SDL_Event &event);
@@ -20,11 +45,6 @@ class Vehicle : public MovingGameEntity {
         void render();
 };
 
-Vehicle::Vehicle(GameWorld * wrld)
-    :m_gWorld(wrld)
-{
-    m_sSprite = new Sprite();
-}
 
 void Vehicle::handle_input(const SDL_Event &event)
 {
@@ -34,10 +54,10 @@ void Vehicle::handle_input(const SDL_Event &event)
         //Adjust the velocity
         switch( event.key.keysym.sym )
         {
-            case SDLK_UP: m_vVel.y -= 1; break;
-            case SDLK_DOWN: m_vVel.y += 1; break;
-            case SDLK_LEFT: m_vVel.x -= 1; break;
-            case SDLK_RIGHT: m_vVel.x += 1; break;
+            case SDLK_UP: m_velocity.y -= 1; break;
+            case SDLK_DOWN: m_velocity.y += 1; break;
+            case SDLK_LEFT: m_velocity.x -= 1; break;
+            case SDLK_RIGHT: m_velocity.x += 1; break;
         }
     }
     //If a key was released
@@ -49,30 +69,30 @@ void Vehicle::handle_input(const SDL_Event &event)
 void Vehicle::update(double time_elapsed)
 {
     //Move the square left or right
-    m_vPos.x += m_vVel.x;
+    m_position.x += m_velocity.x;
 
     //If the square went too far
-    if( ( m_vPos.x < 0 ) || ( m_vPos.x + 10 > m_gWorld->width() ) )
+    if( ( m_position.x < 0 ) || ( m_position.x + 10 > m_world->width() ) )
     {
         //Move back
-        m_vPos.x -= m_vVel.x;
+        m_position.x -= m_velocity.x;
     }
 
     //Move the square up or down
-    m_vPos.y += m_vVel.y;
+    m_position.y += m_velocity.y;
 
     //If the square went too far
-    if( ( m_vPos.y < 0 ) || ( m_vPos.y + 10 >  m_gWorld->height() ) )
+    if( ( m_position.y < 0 ) || ( m_position.y + 10 >  m_world->height() ) )
     {
         //Move back
-        m_vPos.y -= m_vVel.y;
+        m_position.y -= m_velocity.y;
     }
-    m_vHeading = m_vVel;
-    m_vHeading.normalize();
+    m_heading = m_velocity;
+    m_heading.norm();
 }
 
 void Vehicle::render()
 {
-    m_sSprite->render(m_vPos, m_vHeading.angle());
+    m_sprite->render(m_position, m_heading.angle());
 }
 #endif

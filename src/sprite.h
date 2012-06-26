@@ -2,6 +2,7 @@
 #define SPRITE_H 1
 
 #include "vector2d.h"
+#include <iostream>
 
 class Sprite {
 public:
@@ -35,8 +36,9 @@ void Sprite::render(const Vector2D &pos, double heading)
 
     //End quad
     glEnd();
+    std::cout << heading << std::endl;
 
-    glRotatef( heading, pos.x, pos.y, 0.0 );
+    glRotatef( 0.4, pos.x, pos.y, 0.0 );
 
     //Reset
     glLoadIdentity();

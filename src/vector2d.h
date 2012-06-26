@@ -3,11 +3,13 @@
     
 #include <limits>
 #include <cmath>
+#include <iostream>
 
-double epsilon = std::numeric_limits<double>::min();
+double epsilon = 10E-5;
 double epsilonSq = epsilon*epsilon;
 
-class Vector2D {
+class Vector2D
+{
     public:
         double x, y;
 
@@ -16,33 +18,34 @@ class Vector2D {
         ~Vector2D () {};
 
         inline void zero() { x=0, y=0; }
-        inline bool isZero() { return (fabs(x+y) < epsilon*2); }
+        inline bool isZero() { return (fabs(x) < epsilon && fabs(y) < epsilon); }
 
         double lengthSq() { return x*x+y*y; }
         double length() { return sqrt(x*x+y*y); }
 
-        void normalize()
+        Vector2D norm()
         {
-            double magSq = this->lengthSq();
-            if (magSq > epsilonSq) {
-                this->x = (x*x) / magSq; 
-                this->y = (y*y) / magSq; 
+            double mag = this->length();
+            if (mag > epsilon) {
+                x = (x) / mag; 
+                y = (y) / mag; 
             }
+            return *this;
         }
 
-        void rotate(double angle)
+        Vector2D rotate(const double angle) // radians
         {
-            double cf = cosf(angle), sf = sinf(angle);
+            double cf = cos(angle), sf = sin(angle);
             double xt = (x * cf) - (y * sf);
             double yt = (y * cf) + (x * sf);
             x = xt;
             y = yt;
+            return *this;
         }
 
-        double angle()
-        {
-            return atan2(y, x);
-        }
+        double angle() { return atan2(y, x); }
+
+        Vector2D perp() const { return Vector2D(-this->y, this->x); } 
 
         double dot(const Vector2D &other) const { return (x * other.x + y * other.y); }
         double cross(const Vector2D &other) const { return (x * other.y - y * other.x); }
@@ -55,6 +58,16 @@ class Vector2D {
                 return true;
             }
             return false;
+        }
+
+        inline double mySqrt(double num)
+        {
+            double approx = num/2;
+            for (int i = 0; i < 4; i++) {
+                approx = 0.5 * (approx + num/approx);
+            }
+            return approx;
+
         }
 
         inline bool operator!=(const Vector2D &other) {
