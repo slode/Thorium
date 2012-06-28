@@ -46,7 +46,7 @@ namespace {
     TEST(MathTests)
     {
         Vector2D a(0,0), b(0,1), c(1,0), e(7,8);
-        a.norm();
+        a.normalize();
         CHECK(a.length() == 0);
         CHECK(b.dot(c) == 0);
         CHECK(b.cross(c) == -1);
@@ -58,6 +58,6 @@ namespace {
         Vector2D d(c.rotate(pihalf));
 
         CHECK(d == b);
-        CHECK_CLOSE(e.norm().length(), 1.0, 0.0001);
+        CHECK_CLOSE(e.normalize().length(), 1.0, 0.0001);
     }
 }

@@ -23,7 +23,7 @@ class Vector2D
         double lengthSq() { return x*x+y*y; }
         double length() { return sqrt(x*x+y*y); }
 
-        Vector2D norm()
+        Vector2D normalize()
         {
             double mag = this->length();
             if (mag > epsilon) {
@@ -58,16 +58,6 @@ class Vector2D
                 return true;
             }
             return false;
-        }
-
-        inline double mySqrt(double num)
-        {
-            double approx = num/2;
-            for (int i = 0; i < 4; i++) {
-                approx = 0.5 * (approx + num/approx);
-            }
-            return approx;
-
         }
 
         inline bool operator!=(const Vector2D &other) {
